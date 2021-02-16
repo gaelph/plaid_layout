@@ -146,10 +146,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `------------------------------------------------------------------------------------------------------'
  */
 [_NORMAN] = LAYOUT_plaid_grid(
-    KC_TAB,  KC_Q,    KC_W,    KC_D,    KC_F,   KC_K,   KC_Y,   KC_J,   KC_R,    KC_L,    KC_MINS,  KC_BSPC,
-    FR_ESC,  KC_A,    KC_S,    KC_E,    KC_T,   KC_G,   KC_H,   KC_U,   KC_I,    KC_O,    KC_P,     FRENCH,
-    CT_ALT,  KC_Z,    KC_X,    KC_C,    KC_B,   KC_V,   KC_N,   KC_M,   KC_COMM, KC_DOT,  KC_SLASH, KC_RALT,
-    KC_LALT, KC_LCTL, KC_LGUI, KC_LSFT, NM_SPC, NM_SPC, CD_ENT, CD_ENT, KC_RSFT, KC_RGUI, KC_RCTL,  KC_RALT
+    KC_TAB,  KC_Q,    KC_W,    KC_D,    KC_F,    KC_K,   KC_Y,   KC_J,    KC_R,    KC_L,    KC_MINS,  KC_BSPC,
+    FR_ESC,  KC_A,    KC_S,    KC_E,    KC_T,    KC_G,   KC_H,   KC_U,    KC_I,    KC_O,    KC_P,     FRENCH,
+    CT_ALT,  KC_Z,    KC_X,    KC_C,    KC_B,    KC_V,   KC_N,   KC_M,    KC_COMM, KC_DOT,  KC_SLASH, KC_RALT,
+    KC_LALT, KC_LCTL, KC_LGUI, KC_LGUI, KC_LSFT, NM_SPC, CD_ENT, KC_RSFT, KC_RGUI, KC_RGUI, KC_RCTL,  KC_RALT
 ),
 
 /* Code Layer
@@ -205,7 +205,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_GRV,  F_OE,    F_LQUO,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, E_LQUO,  E_RQUO,  F_DEGR,  LALT( KC_MINS ), _______,
     _______, A_GRV,   E_CIR,   E_ACU,   E_GRV,   XXXXXXX, XXXXXXX, F_CIMD,  F_TRMD,  U_GRV,   KC_AT,           F_EURO,
     _______, F_AE,    F_RQUO,  F_CCED,  XXXXXXX, XXXXXXX, KC_PLUS, KC_MINS, KC_HASH, TH_DOT,  KC_BSLS,         _______,
-    _______, _______, _______, KC_LSFT, _______, _______, _______, _______, KC_RSFT, KC_RGUI, KC_RCTL,         KC_RALT
+    _______, _______, _______, _______, KC_LSFT, _______, _______, KC_RSFT, KC_RGUI, KC_RGUI, KC_RCTL,         KC_RALT
 ),
 
 /* Shifted French Layer
