@@ -21,18 +21,18 @@ void matrix_init_user() {
 	set_unicode_input_mode(UC_MAC);
 };
 enum plaid_layers {
-  _NORMAN,
+  _ANNIE,
+  _FRENCH,
   _CODE,
   _NUMBERS,
-  _FRENCH,
   _ADJUST
 };
 
 enum plaid_keycodes {
-  NORMAN = SAFE_RANGE,
+  ANNIE = SAFE_RANGE,
+  FRENCH,
   CODE,
   NUMBERS,
-  FRENCH,
   LED_1,
   LED_2,
   LED_3,
@@ -112,45 +112,64 @@ const uint16_t modifiers[] = {
 #define NM_SPC LT(_NUMBERS,  KC_SPACE) // tap: space, hold: number layer
 #define CD_ENT LT(_CODE,     KC_ENT)   // tap: enter, hold: number layer
 //Code Layer
-#define TH_DOT LALT(KC_SCLN) // …
+#define TH_DOT RALT(KC_SCLN) // …
 //French Layer
 #define F_OE   RALT(KC_Q)    // œŒ
 #define F_LQUO RALT(KC_BSLS) // «
 #define F_RQUO LSA(KC_BSLS)  // »
 #define E_RQUO LSA(KC_RBRC)  // ’
 #define E_RDQU LSA(KC_LBRC)  // ”
-#define E_LQUO LALT(KC_RBRC) // ‘
+#define E_LQUO RALT(KC_RBRC) // ‘
 #define E_LDQU LALT(KC_LBRC) // “
 #define F_DEGR LSA(KC_8)     // °
-#define F_GRMD LALT(KC_GRV)  // `
-#define F_ACMD LALT(KC_E)    // ´
-#define F_CIMD LALT(KC_I)    // ˆ
-#define F_TRMD LALT(KC_U)    // ¨
-#define F_AE   LALT(KC_QUOT) // æ
-#define F_AT   LALT(KC_2)    // @
+#define F_GRMD RALT(KC_GRV)  // `
+#define F_ACMD RALT(KC_E)    // ´
+#define F_CIMD RALT(KC_I)    // ˆ
+#define F_TRMD RALT(KC_U)    // ¨
+#define F_AE   RALT(KC_QUOT) // æ
+#define F_AT   RALT(KC_2)    // @
 #define F_EURO LSA(KC_2)     // €
-#define F_CCED LALT(KC_C)    // çÇ
+#define F_CCED RALT(KC_C)    // çÇ
 #define F_MDOT LSA(KC_9)     // ·
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-/* Norman Layeer
- * ,------------------------------------------------------------------------------------------------------.
- * | Tab            |   Q  |   W  |   D  |   F  |   K  |   Y  |   J  |   R  |   L  |   -  | Bksp          |
- * |----------------+------+------+------+------+-------------+------+------+------+------+---------------|
- * | Esc or French  |   A  |   S  |   E  |   T  |   G  |   H  |   U  |   I  |   O  |   P  | French        |
- * |----------------+------+------+------+------+------|------+------+------+------+------+---------------|
- * | Ctrl + Alt     |   Z  |   X  |   C  |   B  |   V  |   N  |   M  |   ,  |   .  |   /  | Code          |
- * |----------------+------+------+------+------+------+------+------+------+------+------+---------------|
- * | LAlt           | Ctrl | GUI  | LSFT | Spc  | Code | Nums | SEnt | RSFT | GUI  | Ctrl | RAlt          |
- * `------------------------------------------------------------------------------------------------------'
+/* Annie Layeer
+ * ,--------------------------------------------------------------------------------------------------------.
+ * | Tab              |   Q  |   G  |   L  |   P  |   B  |   K  |   F  |   O  |   Y  |   K  | Bksp          |
+ * |------------------+------+------+------+------+-------------+------+------+------+------+---------------|
+ * | Esc or AnnieAlt  |   A  |   S  |   R  |   T  |   C  |   M  |   N  |   E  |   I  |   U  | AnneAlt       |
+ * |------------------+------+------+------+------+------|------+------+------+------+------+---------------|
+ * | Ctrl + Alt       |   Z  |   V  |   J  |   D  |   W  |   X  |   H  |   ,  |   .  |   /  | Code          |
+ * |------------------+------+------+------+------+------+------+------+------+------+------+---------------|
+ * | LAlt             | Ctrl | GUI  | LSFT | Spc  | Code | Nums | SEnt | RSFT | GUI  | Ctrl | RAlt          |
+ * `--------------------------------------------------------------------------------------------------------'
  */
-[_NORMAN] = LAYOUT_plaid_grid(
-    KC_TAB,  KC_Q,    KC_W,    KC_D,    KC_F,    KC_K,   KC_Y,   KC_J,    KC_R,    KC_L,    KC_MINS,  KC_BSPC,
-    FR_ESC,  KC_A,    KC_S,    KC_E,    KC_T,    KC_G,   KC_H,   KC_U,    KC_I,    KC_O,    KC_P,     FRENCH,
-    CT_ALT,  KC_Z,    KC_X,    KC_C,    KC_B,    KC_V,   KC_N,   KC_M,    KC_COMM, KC_DOT,  KC_SLASH, KC_RALT,
-    KC_LALT, KC_LCTL, KC_LGUI, KC_LGUI, KC_LSFT, NM_SPC, CD_ENT, KC_RSFT, KC_RGUI, KC_RGUI, KC_RCTL,  KC_RALT
+[_ANNIE] = LAYOUT_plaid_grid(
+    KC_TAB,  KC_Q,    KC_G,    KC_L,    KC_P,    KC_B,   KC_K,   KC_F,    KC_O,    KC_Y,    KC_MINUS, KC_BSPC,
+    FR_ESC,  KC_A,    KC_S,    KC_R,    KC_T,    KC_C,   KC_M,   KC_N,    KC_E,    KC_I,    KC_U,     FRENCH,
+    CT_ALT,  KC_Z,    KC_V,    KC_J,    KC_D,    KC_W,   KC_X,   KC_H,    KC_COMM, KC_DOT,  KC_SLSH,  CT_ALT,
+    KC_RALT, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, NM_SPC, CD_ENT, KC_RSFT, KC_RGUI, KC_RALT, KC_RCTL,  KC_RALT
 ),
+
+/* French Layer
+ * ,-----------------------------------------------------------------------------------.
+ * |   `  |   œ  |   «  |   ê  |   ù  |   °  |      |   ‘  |   ’  |   °  |   –  | Bksp |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * | ___  |   à  |   ’  |   é  |   è  |   ç  |      |   ˆ  |   ¨  |   ù  |   @  |  €   |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * | ___  |   æ  |   »  |   ¨  |   ˆ  |   €  |   +  |   -  |   #  |   …  |   \  | ___  |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * | ___  | ___  | ___  | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_FRENCH] = LAYOUT_plaid_grid(
+    KC_GRV,  F_OE,    F_LQUO,  E_CIR,   U_GRV,   RALT(KC_ASTR), XXXXXXX, E_LQUO,  E_RQUO,        U_GRV,   RALT( KC_MINS ), _______,
+    _______, A_GRV,   E_RQUO,  E_ACU,   E_GRV,   F_CCED,        XXXXXXX, KC_AT,   RALT(KC_ASTR), F_CIMD,  F_TRMD,          F_EURO,
+    _______, F_AE,    F_RQUO,  F_TRMD,  F_CIMD,  F_EURO,        KC_PLUS, KC_MINS, KC_HASH,       TH_DOT,  KC_BSLS,         _______,
+    _______, _______, _______, _______, _______, _______,       _______, _______, _______,       _______, _______,         _______
+),
+
 
 /* Code Layer
  * ,-----------------------------------------------------------------------------------.
@@ -164,10 +183,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_CODE] = LAYOUT_plaid_grid(
-    KC_TILDE, KC_AMPR, KC_LT,   KC_SLSH, KC_LBRC, KC_RBRC, XXXXXXX, KC_DQUO, KC_QUOT, XXXXXXX, KC_UNDS, _______,
-    KC_DEL,   KC_GRV,  KC_EQL,  KC_EXLM, KC_LPRN, KC_RPRN, KC_CIRC, KC_COLN, KC_SCLN, XXXXXXX, KC_AT,   KC_DLR,
+    KC_TILDE, KC_AMPR, KC_LT,   KC_SLSH, KC_LBRC, KC_RBRC, XXXXXXX, KC_DQUO, KC_QUOT, XXXXXXX, KC_UNDS, KC_DEL,
+    KC_ESC,   KC_GRV,  KC_EQL,  KC_EXLM, KC_LPRN, KC_RPRN, KC_CIRC, KC_COLN, KC_SCLN, XXXXXXX, KC_AT,   KC_DLR,
     _______,  KC_PIPE, KC_GT,   KC_PERC, KC_LCBR, KC_RCBR, KC_PLUS, KC_MINS, KC_HASH, TH_DOT,  KC_BSLS, _______,
-    _______,  _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
+    _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 
@@ -183,54 +202,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_NUMBERS] = LAYOUT_plaid_grid(
-    _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
+    _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
     _______, KC_A,    KC_B,    KC_C,    KC_D,    KC_E,    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX, _______,
     _______, KC_F,    KC_X,    XXXXXXX, XXXXXXX, XXXXXXX, KC_PLUS, KC_MINS, KC_COMM, KC_DOT,  KC_SLSH, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
+    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
 
-/* French Layer
- * ,-----------------------------------------------------------------------------------.
- * |   `  |   œ  |   «  |      |      |      |      |   ‘  |   ’  |   °  |   –  | Bksp |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | ___  |   à  |   ê  |   é  |   è  |      |      |   ˆ  |   ¨  |   ù  |   @  |  €   |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * | ___  |   æ  |   »  |   ç  |      |      |   +  |   -  |   #  |   @  |   \  | ___  |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | ___  | ___  | ___  | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ |
- * `-----------------------------------------------------------------------------------'
- */
-[_FRENCH] = LAYOUT_plaid_grid(
-    KC_GRV,  F_OE,    F_LQUO,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, E_LQUO,  E_RQUO,  F_DEGR,  LALT( KC_MINS ), _______,
-    _______, A_GRV,   E_CIR,   E_ACU,   E_GRV,   XXXXXXX, XXXXXXX, F_CIMD,  F_TRMD,  U_GRV,   KC_AT,           F_EURO,
-    _______, F_AE,    F_RQUO,  F_CCED,  XXXXXXX, XXXXXXX, KC_PLUS, KC_MINS, KC_HASH, TH_DOT,  KC_BSLS,         _______,
-    _______, _______, _______, _______, KC_LSFT, _______, _______, KC_RSFT, KC_RGUI, KC_RGUI, KC_RCTL,         KC_RALT
-),
-
-/* Shifted French Layer
- * ,-----------------------------------------------------------------------------------.
- * |   ~  |   Œ  | ____ | ____ | ____ | ____ | ____ |   ”  |   ‘  | ____ |   _  | ____ |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * | ___  |   À  |   Ê  |   É  |   È  | ____ | ____ | ____ | ____ |   Ù  | ____ | ____ |
- * |------+------+------+------+------+------|------+------+-- ---+------+------+------|
- * | ____ |   Æ  | ____ |   Ç  | ____ | ____ | ____ | ____ | ____ |   ·  | ____ | ____ |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | ___  | ___  | ___  | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ |
- * `-----------------------------------------------------------------------------------'
- */
-/* [_SFRENCH] = LAYOUT_plaid_grid( */
-/*     KC_TILDE, S( F_OE ), _______, _______,     _______, _______, _______, E_LDQU,  E_LQUO,  _______, KC_UNDS, _______, */
-/*     _______,  SA_GRV,    SE_CIR,  SE_ACU,      SE_GRV,  _______, _______, _______, _______, SU_GRV,  _______, _______, */
-/*     _______,  S( F_AE ), _______, S( F_CCED ), _______, _______, _______, _______, _______, F_MDOT,  _______, _______, */
-/*     _______,  _______,   _______, _______,     _______, _______, _______, _______, _______, _______, _______, _______ */
-/* ), */
 
 /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
  * |Reset |      |      |      |      |      |      |      |      |      |      |  Del |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|Plover|      |
+ * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Norman|Annie |Fou   |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |Voice-|Voice+|Mus on|Musoff|MIDIon|MIDIof|      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -238,9 +222,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] = LAYOUT_plaid_grid(
-    RESET,LED_1, LED_2, LED_3, LED_4, LED_5,LED_6, LED_7, LED_8, LED_9, LED_0,KC_DEL ,
-    _______, _______, MU_MOD,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, NORMAN,  _______, _______,  _______,  _______,
-    _______, MUV_DE,  MUV_IN,  MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  TERM_ON, TERM_OFF, _______, _______, _______,
+    RESET,   LED_1,   LED_2,   LED_3,   LED_4,   LED_5,   LED_6,   LED_7,   LED_8,   LED_9,   LED_0,   KC_DEL,
+    ANNIE,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
+    _______, _______, KC_BRID, KC_BRIU, _______, _______, KC_MUTE, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 )
 
@@ -350,12 +334,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   switch (keycode) {
-    // Default layer
-    case NORMAN:
+		// Default layer
+    case ANNIE:
       if (record->event.pressed) {
-        print("mode just switched to qwerty and this is a huge string\n");
-        set_single_persistent_default_layer(_NORMAN);
-      } 
+        print("mode just switched to annie and this is a huge strig\n");
+        set_single_persistent_default_layer(_ANNIE);
+      }
       return false;
       break;
 
@@ -444,14 +428,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // The french layer
     case FRENCH:
       if (record->event.pressed) {
-        if (shift_count > 0) {}
         layer_on(_FRENCH);
       } else {
         layer_off(_FRENCH);
       }
       return false;
       break;
-      
+
     case LED_1:
       if (record->event.pressed) {
         if (led_config.red_mode==LEDMODE_ON) {
@@ -466,6 +449,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       eeconfig_update_user(led_config.raw);
       return false;
       break;
+
     case LED_2:
       if (record->event.pressed) {
         if (led_config.green_mode==LEDMODE_ON) {
@@ -527,7 +511,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
         }
-        SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_GRAVE) SS_UP(X_LALT));
+        SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_GRAVE) SS_UP(X_RALT));
         if (shift_count > 0) {
           register_code(KC_LSFT);
         }
@@ -541,7 +525,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
         }
-        SEND_STRING(SS_LALT("e"));
+        SEND_STRING(SS_RALT("e"));
         if (shift_count > 0) {
           register_code(KC_LSFT);
         }
@@ -555,7 +539,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
         }
-        SEND_STRING(SS_LALT("i"));
+        SEND_STRING(SS_RALT("i"));
         if (shift_count > 0) {
           register_code(KC_LSFT);
         }
@@ -569,7 +553,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
         }
-        SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_GRAVE) SS_UP(X_LALT));
+        SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_GRAVE) SS_UP(X_RALT));
         if (shift_count > 0) {
           register_code(KC_LSFT);
         }
@@ -583,7 +567,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
         }
-        SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_GRAVE) SS_UP(X_LALT));
+        SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_GRAVE) SS_UP(X_RALT));
         if (shift_count > 0) {
           register_code(KC_LSFT);
         }
@@ -592,7 +576,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
-    // ”’°–@€+-#· 
     // «“
     case F_LQUO:
       if (record->event.pressed) {
@@ -616,6 +599,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case F_RQUO:
       if (record->event.pressed) {
         if (shift_count > 0) {
+					unregister_code16(KC_LSFT);
           register_code16(E_RDQU);
           return false;
         } else {
@@ -624,6 +608,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       } else {
         if (shift_count > 0) {
           unregister_code16(E_RDQU);
+					register_code(KC_LSFT);
           return false;
         } else {
           return true;
@@ -651,4 +636,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
   }
   return true;
+}
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case FR_ESC:
+            return 150;
+        default:
+            return TAPPING_TERM;
+    }
 }
