@@ -15,6 +15,8 @@
  */
 
 #include QMK_KEYBOARD_H
+#include "keymap_french_osx.h"
+#include "sendstring_french_osx.h"
 
 
 void matrix_init_user() {
@@ -50,6 +52,9 @@ enum plaid_keycodes {
   E_CIR, // ê
   A_GRV, // à
   U_GRV,  // ù
+  X_CIRC, // ^
+  __GRV, // `
+  FR_LRQU
 };
 
 enum unicode_names {
@@ -111,17 +116,17 @@ const uint16_t modifiers[] = {
 
 // Home Row mods
 // left hand
-#define LCTL_A LCTL_T(KC_A)
-#define LCTL_I LCTL_T(KC_I)
-#define LALT_S LALT_T(KC_S)
-#define LGUI_R LGUI_T(KC_R)
+#define LCTL_A LCTL_T(FR_A)
+#define LCTL_I LCTL_T(FR_I)
+#define LALT_S LALT_T(FR_S)
+#define LGUI_R LGUI_T(FR_R)
 // qwerty
-#define LGUI_D LGUI_T(KC_D)
+#define LGUI_D LGUI_T(FR_D)
 // right hand
-#define RGUI_E RGUI_T(KC_E)
-#define RALT_I RALT_T(KC_I)
-#define RALT_A RALT_T(KC_A)
-#define RCTL_U RCTL_T(KC_U)
+#define RGUI_E RGUI_T(FR_E)
+#define RALT_I RALT_T(FR_I)
+#define RALT_A RALT_T(FR_A)
+#define RCTL_U RCTL_T(FR_U)
 // qwerty
 #define RGUI_K RGUI_T(KC_K)
 #define RALT_L RALT_T(KC_L)
@@ -130,7 +135,7 @@ const uint16_t modifiers[] = {
 //Code Layer
 #define TH_DOT RALT(KC_SCLN) // …
 //French Layer
-#define F_OE   RALT(KC_Q)    // œŒ
+#define F_OE   RALT(KC_O)    // œŒ
 #define F_LQUO RALT(KC_BSLS) // «
 #define F_RQUO LSA(KC_BSLS)  // »
 #define E_RQUO LSA(KC_RBRC)  // ’
@@ -174,16 +179,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `--------------------------------------------------------------------------------------------------------'
  */
 [_ANNIE] = LAYOUT_plaid_grid(
-    KC_TAB,  KC_Q,    KC_C,    KC_L,    KC_P,    KC_B,   KC_K,   KC_F,    KC_O,    KC_Y,    KC_MINUS, KC_BSPC,
-    FR_ESC,  LCTL_A,  LALT_S,  LGUI_R,  KC_T,    KC_G,   KC_M,   KC_N,    RGUI_E,  RALT_I,  RCTL_U,   FRENCH,
-    CT_ALT,  KC_Z,    KC_V,    KC_J,    KC_D,    KC_W,   KC_X,   KC_H,    KC_COMM, KC_DOT,  KC_SLSH,  CT_ALT,
+    KC_TAB,  FR_Q,    FR_C,    FR_L,    FR_P,    FR_B,   FR_K,   FR_F,    FR_O,    FR_Y,    FR_MINS, KC_BSPC,
+    FR_ESC,  LCTL_A,  LALT_S,  LGUI_R,  FR_T,    FR_G,   FR_M,   FR_N,    RGUI_E,  RALT_I,  RCTL_U,   FRENCH,
+    CT_ALT,  FR_Z,    FR_V,    FR_J,    FR_D,    FR_W,   FR_X,   FR_H,    FR_COMM, FR_DOT,  FR_SLSH,  CT_ALT,
     KC_RALT, KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, NM_SPC, CD_ENT, KC_RSFT, KC_RGUI, KC_RALT, KC_RCTL,  KC_RALT
 ),
 
 [_QWERTY] = LAYOUT_plaid_grid(
-	KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
-	KC_ESC,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-	CT_ALT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, CT_ALT,
+	KC_TAB,  FR_Q,    FR_W,    FR_E,    FR_R,    FR_T,    FR_Y,    FR_U,    FR_I,    FR_O,    FR_P,    KC_BSPC,
+	KC_ESC,  FR_A,    FR_S,    FR_D,    FR_F,    FR_G,    FR_H,    FR_J,    FR_K,    FR_L,    FR_SCLN, FR_QUOT,
+	CT_ALT,  FR_Z,    FR_X,    FR_C,    FR_V,    FR_B,    FR_N,    FR_M,    FR_COMM, FR_DOT,  FR_SLSH, CT_ALT,
 	_______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 ),
 
@@ -200,9 +205,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_FRENCH] = LAYOUT_plaid_grid(
-    KC_GRV,  F_OE,    F_LQUO,  E_CIR,   U_GRV,   RALT(KC_ASTR), XXXXXXX, E_LQUO,  E_RQUO,  RALT(KC_MINS),   RALT(KC_MINS), _______,
-    _______, A_GRV,   E_RQUO,  E_ACU,   E_GRV,   F_CCED,        XXXXXXX, KC_AT,   F_EURO,  F_CIMD,  KC_AT,          F_EURO,
-    _______, F_AE,    F_RQUO,  F_TRMD,  F_CIMD,  F_EURO,        KC_PLUS, KC_MINS, KC_HASH, TH_DOT,  KC_BSLS,       _______,
+    FR_GRV,  FR_OE,    FR_LDAQ,  FR_ECIR,   FR_LUGR,   FR_DEG, XXXXXXX, FR_LSQU,  FR_LRQU,  FR_MDSH,   FR_MDSH, _______,
+    _______, FR_LAGR,   FR_LRQU,  FR_LEAC,   FR_LEGR,   FR_LCCE,        XXXXXXX, FR_AT,   FR_EURO,  FR_CIRC,  FR_AT,          FR_EURO,
+    _______, FR_AE,    FR_RDAQ,  FR_DIAE,  FR_CIRC,  FR_EURO,        FR_PLUS, FR_MINS, FR_HASH, FR_ELLP,  FR_BSLS,       _______,
     _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______,       _______
 ),
 
@@ -219,9 +224,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_CODE] = LAYOUT_plaid_grid(
-    KC_TILDE, KC_AMPR, KC_LT,   KC_LBRC, KC_RBRC, KC_SLSH, XXXXXXX, KC_DQUO, KC_QUOT, XXXXXXX, KC_UNDS, KC_DEL,
-    KC_ESC,   KC_GRV,  KC_EQL,  KC_LPRN, KC_RPRN, KC_EXLM, KC_CIRC, KC_COLN, KC_SCLN, XXXXXXX, KC_AT,   KC_DLR,
-    _______,  KC_PIPE, KC_GT,   KC_LCBR, KC_RCBR, KC_PERC, KC_PLUS, KC_MINS, KC_HASH, TH_DOT,  KC_BSLS, _______,
+    FR_TILD, FR_AMPR, FR_LSAQ,   FR_LBRC, FR_RBRC, FR_SLSH, XXXXXXX, FR_DQUO, FR_QUOT, XXXXXXX, FR_UNDS, KC_DEL,
+    KC_ESC,    __GRV,  FR_EQL,  FR_LPRN, FR_RPRN, FR_EXLM,  X_CIRC, FR_COLN, FR_SCLN, XXXXXXX, FR_AT,   FR_DLR,
+    _______,  FR_PIPE, FR_RSAQ,   FR_LCBR, FR_RCBR, FR_PERC, FR_PLUS, FR_MINS, FR_HASH, FR_ELLP,  FR_BSLS, _______,
     _______,  _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______
 ),
 
@@ -239,9 +244,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_NUMBERS] = LAYOUT_plaid_grid(
-    _______, KC_1,    KC_2,    KC_3,    KC_4,      KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,
-    _______, XXXXXXX, KC_HOME, KC_PGUP, KC_PGDOWN, KC_END,  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_ASTR, _______,
-    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, KC_PLUS, KC_MINS, KC_COMM, KC_DOT,  KC_SLSH, _______,
+    _______, FR_1,    FR_2,    FR_3,    FR_4,      FR_5,    FR_6,    FR_7,    FR_8,    FR_9,    FR_0,    _______,
+    _______, XXXXXXX, KC_HOME, KC_PGUP, KC_PGDOWN, KC_END,  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, FR_ASTR, _______,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, FR_PLUS, FR_MINS, FR_COMM, FR_DOT,  FR_SLSH, _______,
     _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______, _______, _______
 ),
 
@@ -373,7 +378,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   switch (keycode) {
-		// Default layer
+    // Default layer
     case ANNIE:
       if (record->event.pressed) {
         print("mode just switched to annie and this is a huge strig\n");
@@ -384,8 +389,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case QWERTY:
       if (record->event.pressed) {
-	      print("mode just switched to qwerty and this is a huge string\n");
-	      set_single_persistent_default_layer(_QWERTY);
+        print("mode just switched to qwerty and this is a huge string\n");
+        set_single_persistent_default_layer(_QWERTY);
       }
       return false;
       break;
@@ -408,46 +413,52 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
 
     // ,*
-    case KC_COMM:
+    case FR_COMM:
       if (shift_count > 0) {
         if (record->event.pressed) {
-          register_code16(KC_ASTR);
+          register_code16(FR_ASTR);
         } else {
-          unregister_code16(KC_ASTR);
+          unregister_code16(FR_ASTR);
         }
         return false;
       } else {
-        unregister_code16(KC_ASTR);
+        unregister_code16(FR_ASTR);
         return true;
       }
       break;
-      
+
     // .!
-    case KC_DOT:
+    case FR_DOT:
       if (shift_count > 0) {
+        unregister_code(KC_LSFT);
         if (record->event.pressed) {
-          register_code16(KC_EXLM);
+          register_code16(FR_EXLM);
         } else {
-          unregister_code16(KC_EXLM);
+          register_code(KC_LSFT);
         }
+        register_code(KC_LSFT);
+
         return false;
       } else {
-        unregister_code16(KC_EXLM);
+        unregister_code16(FR_EXLM);
         return true;
       }
       break;
 
     // /?
-    case KC_SLSH:
+    case FR_SLSH:
       if (shift_count > 0) {
+        unregister_code(KC_LSFT);
         if (record->event.pressed) {
-          register_code16(KC_QUES);
+          register_code16(FR_QUES);
         } else {
-          unregister_code16(KC_QUES);
+          unregister_code16(FR_QUES);
         }
+        register_code(KC_LSFT);
+
         return false;
       } else {
-        unregister_code16(KC_QUES);
+        unregister_code16(FR_QUES);
         return true;
       }
       break;
@@ -485,12 +496,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case LED_1:
       if (record->event.pressed) {
         if (led_config.red_mode==LEDMODE_ON) {
-            led_config.red_mode=LEDMODE_OFF;
-            writePinLow(LED_RED);
+          led_config.red_mode=LEDMODE_OFF;
+          writePinLow(LED_RED);
         }
         else {
-            led_config.red_mode=LEDMODE_ON;
-            writePinHigh(LED_RED);
+          led_config.red_mode=LEDMODE_ON;
+          writePinHigh(LED_RED);
         }
       }
       eeconfig_update_user(led_config.raw);
@@ -500,12 +511,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case LED_2:
       if (record->event.pressed) {
         if (led_config.green_mode==LEDMODE_ON) {
-            led_config.green_mode=LEDMODE_OFF;
-            writePinLow(LED_GREEN);
+          led_config.green_mode=LEDMODE_OFF;
+          writePinLow(LED_GREEN);
         }
         else {
-            led_config.green_mode=LEDMODE_ON;
-            writePinHigh(LED_GREEN);
+          led_config.green_mode=LEDMODE_ON;
+          writePinHigh(LED_GREEN);
         }
       }
       eeconfig_update_user(led_config.raw);
@@ -551,28 +562,48 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       eeconfig_update_user(led_config.raw);
       return false;
       break;
-    
+
     // French special characters
-    case E_GRV: // èÈ
+    case X_CIRC: // ^ (not dead)
+      SEND_STRING("^ ");
+      break;
+
+    case __GRV: // ` (not dead)
+      SEND_STRING("` ");
+      break;
+
+    case FR_LCCE: // çÇ
       if (record->event.pressed) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
-        }
-        SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_GRAVE) SS_UP(X_RALT));
-        if (shift_count > 0) {
+          register_code16(FR_CCCE);
           register_code(KC_LSFT);
+        } else {
+          return true;
         }
-        SEND_STRING("e"); 
+      }
+      return false;
+      break;
+
+    case FR_LEGR: // èÈ
+      if (record->event.pressed) {
+        if (shift_count > 0) {
+          unregister_code(KC_LSFT);
+          register_code16(FR_CEGR);
+          register_code(KC_LSFT);
+        } else {
+          return true;
+        }
       } 
       return false;
       break;
 
-    case E_ACU: // éÉ
+    case FR_LEAC: // éÉ
       if (record->event.pressed) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
         }
-        SEND_STRING(SS_RALT("e"));
+        register_code16(FR_ACUT);
         if (shift_count > 0) {
           register_code(KC_LSFT);
         }
@@ -581,26 +612,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
-    case E_CIR: // êÊ
+    case FR_ECIR: // êÊ
       if (record->event.pressed) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
-        }
-        SEND_STRING(SS_RALT("i"));
-        if (shift_count > 0) {
+          SEND_STRING(SS_RALT(SS_RSFT("e")));
           register_code(KC_LSFT);
+        } else {
+          return true;
         }
-        SEND_STRING("e");
       }
       return false;
       break;
 
-    case A_GRV: // àÀ
+    case FR_LAGR: // àÀ
       if (record->event.pressed) {
+        if (shift_count == 0) {
+          return true;
+        }
+
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
         }
-        SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_GRAVE) SS_UP(X_RALT));
+        SEND_STRING(SS_TAP(X_BSLS));
         if (shift_count > 0) {
           register_code(KC_LSFT);
         }
@@ -609,34 +643,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
-    case U_GRV:  // ùÙ
+    case FR_LUGR:  // ùÙ
       if (record->event.pressed) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
-        }
-        SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_GRAVE) SS_UP(X_RALT));
-        if (shift_count > 0) {
+          register_code16(FR_CUGR);
           register_code(KC_LSFT);
+        } else {
+          return true;
         }
-        SEND_STRING("u");
       }
       return false;
       break;
 
+    case FR_LRQU:
+      if (record->event.pressed) {
+        unregister_code(KC_LSFT);
+        SEND_STRING(SS_RALT("'"));
+        register_code(KC_LSFT);
+        return false;
+      }
+      break;
+
     // «“
-    case F_LQUO:
+    case FR_LDAQ:
       if (record->event.pressed) {
         if (shift_count > 0) {
-				unregister_code16(KC_LSFT);
-          register_code16(E_LDQU);
-          return false;
-        } else {
-          return true;
-        }
-      } else {
-        if (shift_count > 0) {
-          unregister_code16(E_LDQU);
-					register_code16(KC_LSFT);
+          unregister_code16(KC_LSFT);
+          SEND_STRING(SS_DOWN(X_RALT) "\"" SS_UP(X_RALT));
+          register_code16(KC_LSFT);
           return false;
         } else {
           return true;
@@ -648,39 +683,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case F_RQUO:
       if (record->event.pressed) {
         if (shift_count > 0) {
-					unregister_code16(KC_LSFT);
-          register_code16(E_RDQU);
+          SEND_STRING(SS_DOWN(X_RALT) "'" SS_UP(X_RALT));
           return false;
         } else {
           return true;
         } 
-      } else {
-        if (shift_count > 0) {
-          unregister_code16(E_RDQU);
-					register_code(KC_LSFT);
-          return false;
-        } else {
-          return true;
-        }
-      }
+      } 
       break;
 
     // …·
-    case TH_DOT:
+    case FR_ELLP:
       if (record->event.pressed) {
         if (shift_count > 0) {
-          register_code16(F_MDOT);
+          unregister_code(KC_LSFT);
+          register_code16(FR_MDDT);
+          register_code(KC_LSFT);
           return false;
-        } else {
-          return true; 
-        }
-      } else {
-        if (shift_count > 0) {
-          unregister_code16(F_MDOT);
-          return false;
-        } else {
-          return true;
-        }
+        } 
+        return true;
       }
       break;
   }
