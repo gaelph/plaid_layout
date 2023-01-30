@@ -206,13 +206,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_FRENCH] = LAYOUT_plaid_grid(
     FR_GRV,  FR_OE,    FR_LDAQ,  FR_ECIR,   FR_LUGR,   FR_DEG, XXXXXXX, FR_LSQU,  FR_LRQU,  FR_MDSH,   FR_MDSH, _______,
-    _______, FR_LAGR,   FR_LRQU,  FR_LEAC,   FR_LEGR,   FR_LCCE,        XXXXXXX, FR_AT,   FR_EURO,  FR_CIRC,  FR_AT,          FR_EURO,
+    _______, FR_LAGR,   FR_LRQU,  FR_LEAC,   FR_LEGR,   FR_LCCE,        XXXXXXX, FR_AT,   FR_EURO,  FR_CIRC, RALT(KC_GRV),          FR_EURO,
     _______, FR_AE,    FR_RDAQ,  FR_DIAE,  FR_CIRC,  FR_EURO,        FR_PLUS, FR_MINS, FR_HASH, FR_ELLP,  FR_BSLS,       _______,
     _______, _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______,       _______
 ),
 
 
 /* Code Layer
+ *
  * ,-----------------------------------------------------------------------------------.
  * |   ~  |   &  |   <  |   [  |   ]  |   /  |      |   "  |   '  |      |      | DEL  |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
@@ -223,10 +224,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | ____ | ____ | ____ | ___  | ____ |  DEL | ____ | ____ | ____ | ____ | ____ | ____ |
  * `-----------------------------------------------------------------------------------'
  */
+	
 [_CODE] = LAYOUT_plaid_grid(
-    FR_TILD, FR_AMPR, FR_LSAQ,   FR_LBRC, FR_RBRC, FR_SLSH, XXXXXXX, FR_DQUO, FR_QUOT, XXXXXXX, FR_UNDS, KC_DEL,
-    KC_ESC,    __GRV,  FR_EQL,  FR_LPRN, FR_RPRN, FR_EXLM,  X_CIRC, FR_COLN, FR_SCLN, XXXXXXX, FR_AT,   FR_DLR,
-    _______,  FR_PIPE, FR_RSAQ,   FR_LCBR, FR_RCBR, FR_PERC, FR_PLUS, FR_MINS, FR_HASH, FR_ELLP,  FR_BSLS, _______,
+    FR_TILD, FR_AMPR, FR_LABK,   FR_LBRC, FR_RBRC, FR_SLSH, XXXXXXX, FR_DQUO, FR_QUOT, XXXXXXX, FR_UNDS, KC_DEL,
+    KC_ESC,    __GRV,  FR_EQL,  FR_LPRN, FR_RPRN, FR_EXLM,  X_CIRC, FR_COLN, FR_SCLN, XXXXXXX,FR_AT,   FR_DLR,
+    _______,  FR_PIPE, FR_RABK,   FR_LCBR, FR_RCBR, FR_PERC, FR_PLUS, FR_MINS, FR_HASH, FR_ELLP,  FR_BSLS, _______,
     _______,  _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______
 ),
 
@@ -414,52 +416,51 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // ,*
     case FR_COMM:
-      if (shift_count > 0) {
-        if (record->event.pressed) {
+      if (record->event.pressed) {
+        if (shift_count > 0) {
+          unregister_code(KC_LSFT);
           register_code16(FR_ASTR);
-        } else {
+          register_code(KC_LSFT);
+          return false;
+        }
+      } else {
+        if (shift_count > 0) {
           unregister_code16(FR_ASTR);
         }
-        return false;
-      } else {
-        unregister_code16(FR_ASTR);
-        return true;
       }
       break;
 
     // .!
     case FR_DOT:
-      if (shift_count > 0) {
-        unregister_code(KC_LSFT);
-        if (record->event.pressed) {
+      if (record->event.pressed) {
+        if (shift_count > 0) {
+          unregister_code(KC_LSFT);
           register_code16(FR_EXLM);
-        } else {
           register_code(KC_LSFT);
-        }
-        register_code(KC_LSFT);
 
-        return false;
+          return false;
+        }
       } else {
-        unregister_code16(FR_EXLM);
-        return true;
+        if (shift_count > 0) {
+          unregister_code16(FR_EXLM);
+        }
       }
       break;
 
     // /?
     case FR_SLSH:
-      if (shift_count > 0) {
-        unregister_code(KC_LSFT);
-        if (record->event.pressed) {
+      if (record->event.pressed) {
+        if (shift_count > 0) {
+          unregister_code(KC_LSFT);
           register_code16(FR_QUES);
-        } else {
+          register_code(KC_LSFT);
+
+          return false;
+        }
+      } else {
+        if (shift_count > 0) {
           unregister_code16(FR_QUES);
         }
-        register_code(KC_LSFT);
-
-        return false;
-      } else {
-        unregister_code16(FR_QUES);
-        return true;
       }
       break;
 
@@ -498,8 +499,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (led_config.red_mode==LEDMODE_ON) {
           led_config.red_mode=LEDMODE_OFF;
           writePinLow(LED_RED);
-        }
-        else {
+          }
+          else {
           led_config.red_mode=LEDMODE_ON;
           writePinHigh(LED_RED);
         }
@@ -513,8 +514,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (led_config.green_mode==LEDMODE_ON) {
           led_config.green_mode=LEDMODE_OFF;
           writePinLow(LED_GREEN);
-        }
-        else {
+          }
+          else {
           led_config.green_mode=LEDMODE_ON;
           writePinHigh(LED_GREEN);
         }
@@ -565,11 +566,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // French special characters
     case X_CIRC: // ^ (not dead)
-      SEND_STRING("^ ");
+      if (record->event.pressed) {
+        SEND_STRING(SS_TAP(X_LBRC)  SS_TAP(X_SPC));
+      }
+      return false;
       break;
 
     case __GRV: // ` (not dead)
-      SEND_STRING("` ");
+      if (record->event.pressed) {
+        SEND_STRING(SS_TAP(X_BSLS) SS_DELAY(100) SS_TAP(X_SPC));
+      }
+
+      return false;
       break;
 
     case FR_LCCE: // çÇ
@@ -578,11 +586,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           unregister_code(KC_LSFT);
           register_code16(FR_CCCE);
           register_code(KC_LSFT);
-        } else {
-          return true;
+          return false;
         }
+        return true;
       }
-      return false;
       break;
 
     case FR_LEGR: // èÈ
@@ -591,25 +598,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           unregister_code(KC_LSFT);
           register_code16(FR_CEGR);
           register_code(KC_LSFT);
-        } else {
-          return true;
+          return false;
+        } 
+      } else {
+        if (shift_count > 0) {
+          unregister_code16(FR_CEGR);
         }
-      } 
-      return false;
+      }
       break;
 
     case FR_LEAC: // éÉ
       if (record->event.pressed) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
-        }
-        register_code16(FR_ACUT);
-        if (shift_count > 0) {
+          SEND_STRING(SS_DOWN(X_RALT) SS_DOWN(X_RSFT) SS_TAP(X_1) SS_UP(X_RSFT) SS_UP(X_RALT) "E");
           register_code(KC_LSFT);
+          return false;
         }
-        SEND_STRING("e");
+        return true;
       }
-      return false;
       break;
 
     case FR_ECIR: // êÊ
@@ -618,11 +625,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           unregister_code(KC_LSFT);
           SEND_STRING(SS_RALT(SS_RSFT("e")));
           register_code(KC_LSFT);
-        } else {
-          return true;
+          return false;
         }
+
+        return true;
       }
-      return false;
       break;
 
     case FR_LAGR: // àÀ
@@ -639,8 +646,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           register_code(KC_LSFT);
         }
         SEND_STRING("a");
+
+        return false;
       }
-      return false;
       break;
 
     case FR_LUGR:  // ùÙ
@@ -649,18 +657,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           unregister_code(KC_LSFT);
           register_code16(FR_CUGR);
           register_code(KC_LSFT);
-        } else {
-          return true;
-        }
+          return false;
+        } 
       }
-      return false;
       break;
 
     case FR_LRQU:
       if (record->event.pressed) {
-        unregister_code(KC_LSFT);
-        SEND_STRING(SS_RALT("'"));
-        register_code(KC_LSFT);
+        if (shift_count > 0) {
+          unregister_code(KC_LSFT);
+        }
+        SEND_STRING(SS_DOWN(X_LSFT) SS_RALT("\'") SS_UP(X_LSFT));
+        if (shift_count > 0) {
+          register_code(KC_LSFT);
+        }
         return false;
       }
       break;
@@ -692,6 +702,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
 
     // …·
+
     case FR_ELLP:
       if (record->event.pressed) {
         if (shift_count > 0) {
@@ -701,6 +712,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           return false;
         } 
         return true;
+      } else {
+        if (shift_count > 0) {
+          unregister_code16(FR_MDDT);
+        }
       }
       break;
   }
