@@ -484,6 +484,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
           return false;
         } else if ((ctrl_count > 0 && alt_count > 0) || (ctrl_count > 0 && alt_count > 0 && cmd_count > 0)) {
+          register_code(KC_LCTL);
+          register_code(KC_LALT);
           register_code16(KC_COMM);
 
           return false;
@@ -493,6 +495,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           unregister_code16(FR_ASTR);
         } else if ((ctrl_count > 0 && alt_count > 0) || (ctrl_count > 0 && alt_count > 0 && cmd_count > 0)) {
           unregister_code16(KC_COMM);
+          unregister_code(KC_LALT);
+          unregister_code(KC_LCTL);
         }
       }
       break;
@@ -507,6 +511,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
           return false;
         } else if ((ctrl_count > 0 && alt_count > 0) || (ctrl_count > 0 && alt_count > 0 && cmd_count > 0)) {
+          register_code(KC_LCTL);
+          register_code(KC_LALT);
           register_code16(KC_DOT);
 
           return false;
@@ -516,6 +522,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           unregister_code16(FR_EXLM);
         } else if ((ctrl_count > 0 && alt_count > 0) || (ctrl_count > 0 && alt_count > 0 && cmd_count > 0)) {
           unregister_code16(KC_DOT);
+          unregister_code(KC_LALT);
+          unregister_code(KC_LCTL);
         }
       }
       break;
