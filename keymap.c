@@ -19,9 +19,6 @@
 #include "sendstring_french_osx.h"
 
 
-void matrix_init_user() {
-	set_unicode_input_mode(UC_MAC);
-};
 enum plaid_layers {
   _ANNIE,
   _QWERTY,
@@ -47,40 +44,9 @@ enum plaid_keycodes {
   LED_8,
   LED_9,
   LED_0,
-  E_GRV, // è
-  E_ACU, // é
-  E_CIR, // ê
-  A_GRV, // à
-  U_GRV,  // ù
-  X_CIRC, // ^
+  __CIRC, // ^
   __GRV, // `
-  FR_LRQU
-};
-
-enum unicode_names {
-  SPACE,
-  NBSP,
-  NNBSP,
-  UNDERSCORE,
-  COMMA,
-  PERIOD,
-  SLASH,
-  ASTER,
-  EXCLAM,
-  QUEST
-};
-
-const uint32_t PROGMEM unicode_map[] = {
-    [SPACE]  = 0x20,  // regular space
-    [NBSP] = 0x00A0, // non-beakable sapce
-    [NNBSP] = 0x202F, // narrow non-breakable space
-    [UNDERSCORE] = '_',  // 
-    [COMMA]  = ',', // 
-    [PERIOD] = '.',
-    [SLASH] = '/',
-    [ASTER] = '*',
-    [EXCLAM] = '!',
-    [QUEST] = '?'
+  FR_LRQU // missing typographic quote
 };
 
 // array of keys considered modifiers for led purposes
@@ -117,7 +83,6 @@ const uint16_t modifiers[] = {
 // Home Row mods
 // left hand
 #define LCTL_A LCTL_T(FR_A)
-#define LCTL_I LCTL_T(FR_I)
 #define LALT_S LALT_T(FR_S)
 #define LGUI_R LGUI_T(FR_R)
 // qwerty
@@ -125,7 +90,6 @@ const uint16_t modifiers[] = {
 // right hand
 #define RGUI_E RGUI_T(FR_E)
 #define RALT_I RALT_T(FR_I)
-#define RALT_A RALT_T(FR_A)
 #define RCTL_U RCTL_T(FR_U)
 // qwerty
 #define RGUI_K RGUI_T(KC_K)
@@ -134,25 +98,8 @@ const uint16_t modifiers[] = {
 
 //Code Layer
 #define TH_DOT RALT(KC_SCLN) // …
-//French Layer
-#define F_OE   RALT(KC_O)    // œŒ
-#define F_LQUO RALT(KC_BSLS) // «
-#define F_RQUO LSA(KC_BSLS)  // »
-#define E_RQUO LSA(KC_RBRC)  // ’
-#define E_RDQU LSA(KC_LBRC)  // ”
-#define E_LQUO RALT(KC_RBRC) // ‘
-#define E_LDQU RALT(KC_LBRC) // “
-#define F_DEGR LSA(KC_8)     // °
-#define F_GRMD RALT(KC_GRV)  // `
-#define F_ACMD RALT(KC_E)    // ´
-#define F_CIMD RALT(KC_I)    // ˆ
-#define F_TRMD RALT(KC_U)    // ¨
-#define F_AE   RALT(KC_QUOT) // æÆ
-#define F_AT   RALT(KC_2)    // @
-#define F_EURO LSA(KC_2)     // €
-#define F_CCED RALT(KC_C)    // çÇ
-#define F_MDOT LSA(KC_9)     // ·
 
+// COMBOS !
 const uint16_t PROGMEM CB_ESC[] = { KC_N, RGUI_E, COMBO_END };
 const uint16_t PROGMEM CB_TAB[] = { KC_T, LGUI_R, COMBO_END };
 const uint16_t PROGMEM CB_BSPC[] = { KC_F, KC_O, COMBO_END };
@@ -221,13 +168,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | ____ |   |  |   >  |   {  |   }  |   %  |   +  |   -  |   #  |   …  |   \  | ____ |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | ____ | ____ | ____ | ___  | ____ |  DEL | ____ | ____ | ____ | ____ | ____ | ____ |
+ * | ____ | ____ | ____ | ___  | ____ | ____ | ____ | ____ | ____ | ____ | ____ | ____ |
  * `-----------------------------------------------------------------------------------'
  */
 	
 [_CODE] = LAYOUT_plaid_grid(
     FR_TILD, FR_AMPR, FR_LABK,   FR_LBRC, FR_RBRC, FR_SLSH, XXXXXXX, FR_DQUO, FR_QUOT, XXXXXXX, FR_UNDS, KC_DEL,
-    KC_ESC,    __GRV,  FR_EQL,  FR_LPRN, FR_RPRN, FR_EXLM,  X_CIRC, FR_COLN, FR_SCLN, XXXXXXX,FR_AT,   FR_DLR,
+    KC_ESC,    __GRV,  FR_EQL,  FR_LPRN, FR_RPRN, FR_EXLM,  __CIRC, FR_COLN, FR_SCLN, XXXXXXX,FR_AT,   FR_DLR,
     _______,  FR_PIPE, FR_RABK,   FR_LCBR, FR_RCBR, FR_PERC, FR_PLUS, FR_MINS, FR_HASH, FR_ELLP,  FR_BSLS, _______,
     _______,  _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______
 ),
@@ -237,7 +184,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------------------------------------------------------.
  * | ____ |   1  |   2  |    3    |     4     |   5  |   6  |   7  |   8  |   9  |   0  | ____ |
  * |------+------+------+---------+-----------+------+------+------+------+------+------+------|
- * | ____ |      | home | page up | page down |      | Left | Down | Up   | Right|   *  | ____ |
+ * | ____ |      | home | page up | page down | end  | Left | Down | Up   | Right|   *  | ____ |
  * |------+------+------+---------+-----------+------|------+------+------+------+------+------|
  * | ____ |      |      |         |           |      |   +  |   -  |   ,  |   .  |   /  | ____ |
  * |------+------+------+---------+-----------+------+------+------+------+------+------+------|
@@ -309,7 +256,7 @@ void eeconfig_init_user(void) {  // EEPROM is getting reset!
   led_config.raw = 0;
   led_config.red_mode = LEDMODE_ON;
   led_config.green_mode = LEDMODE_MODS;
-      eeconfig_update_user(led_config.raw);
+  eeconfig_update_user(led_config.raw);
   eeconfig_update_user(led_config.raw);
 }
 
@@ -367,6 +314,9 @@ void led_keypress_update(uint8_t led, uint8_t led_mode, uint16_t keycode, keyrec
 
 
 int shift_count = 0;
+int ctrl_count = 0;
+int alt_count = 0;
+int cmd_count = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   /* If the either led mode is keypressed based, call the led updater
@@ -397,7 +347,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
-    // Allows for custom shift behavior 
+    // Modifier counters allow for custom behaviors
     case KC_LSFT:
     case KC_RSFT:
       if (record->event.pressed) {
@@ -414,55 +364,85 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
-    // ,*
-    case FR_COMM:
+    case KC_LALT:
+    case KC_RALT:
       if (record->event.pressed) {
-        if (shift_count > 0) {
-          unregister_code(KC_LSFT);
-          register_code16(FR_ASTR);
-          register_code(KC_LSFT);
-          return false;
+        if (alt_count == 0) {
+          register_code(keycode);
         }
+        alt_count++;
       } else {
-        if (shift_count > 0) {
-          unregister_code16(FR_ASTR);
+        alt_count--;
+        if (alt_count == 0) {
+          unregister_code(keycode);
         }
       }
+      return false;
       break;
-
-    // .!
-    case FR_DOT:
+			
+    case KC_LCTL:
+    case KC_RCTL:
       if (record->event.pressed) {
-        if (shift_count > 0) {
-          unregister_code(KC_LSFT);
-          register_code16(FR_EXLM);
-          register_code(KC_LSFT);
-
-          return false;
+        if (ctrl_count == 0) {
+          register_code(keycode);
         }
+        ctrl_count++;
       } else {
-        if (shift_count > 0) {
-          unregister_code16(FR_EXLM);
+        ctrl_count--;
+        if (ctrl_count == 0) {
+          unregister_code(keycode);
         }
       }
+      return false;
       break;
 
-    // /?
-    case FR_SLSH:
+    case KC_LGUI:
+    case KC_RGUI:
       if (record->event.pressed) {
-        if (shift_count > 0) {
-          unregister_code(KC_LSFT);
-          register_code16(FR_QUES);
-          register_code(KC_LSFT);
-
-          return false;
+        if (cmd_count == 0) {
+          register_code(keycode);
         }
+        cmd_count++;
       } else {
-        if (shift_count > 0) {
-          unregister_code16(FR_QUES);
+        cmd_count--;
+        if (cmd_count == 0) {
+          unregister_code(keycode);
         }
       }
+      return false;
       break;
+
+    case LCTL_A:
+    case RCTL_U:
+      if (record->event.pressed) {
+        ctrl_count++;
+      } else {
+        ctrl_count--;
+      }
+      return true;
+      break;
+
+    case LALT_S:
+    case RALT_I:
+      if (record->event.pressed) {
+        alt_count++;
+      } else {
+        alt_count--;
+      }
+      return true;
+      break; 
+
+    case LGUI_R:
+    case LGUI_D:
+    case RGUI_E:
+      if (record->event.pressed) {
+        cmd_count++;
+      } else {
+        cmd_count--;
+      }
+      return true;
+      break;
+
 
     // The code layer
     case CODE:
@@ -494,78 +474,71 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
-    case LED_1:
+    // ,*
+    case FR_COMM:
       if (record->event.pressed) {
-        if (led_config.red_mode==LEDMODE_ON) {
-          led_config.red_mode=LEDMODE_OFF;
-          writePinLow(LED_RED);
-          }
-          else {
-          led_config.red_mode=LEDMODE_ON;
-          writePinHigh(LED_RED);
+        if (shift_count > 0 && (ctrl_count == 0 && alt_count == 0 && cmd_count == 0)) {
+          unregister_code(KC_LSFT);
+          register_code16(FR_ASTR);
+          register_code(KC_LSFT);
+
+          return false;
+        } else if ((ctrl_count > 0 && alt_count > 0) || (ctrl_count > 0 && alt_count > 0 && cmd_count > 0)) {
+          register_code16(KC_COMM);
+
+          return false;
+        }
+      } else {
+        if (shift_count > 0 && (ctrl_count == 0 && alt_count == 0 && cmd_count == 0)) {
+          unregister_code16(FR_ASTR);
+        } else if ((ctrl_count > 0 && alt_count > 0) || (ctrl_count > 0 && alt_count > 0 && cmd_count > 0)) {
+          unregister_code16(KC_COMM);
         }
       }
-      eeconfig_update_user(led_config.raw);
-      return false;
       break;
 
-    case LED_2:
+    // .!
+    case FR_DOT:
       if (record->event.pressed) {
-        if (led_config.green_mode==LEDMODE_ON) {
-          led_config.green_mode=LEDMODE_OFF;
-          writePinLow(LED_GREEN);
-          }
-          else {
-          led_config.green_mode=LEDMODE_ON;
-          writePinHigh(LED_GREEN);
+        if (shift_count > 0 && (ctrl_count == 0 && alt_count == 0 && cmd_count == 0)) {
+          unregister_code(KC_LSFT);
+          register_code16(FR_EXLM);
+          register_code(KC_LSFT);
+
+          return false;
+        } else if ((ctrl_count > 0 && alt_count > 0) || (ctrl_count > 0 && alt_count > 0 && cmd_count > 0)) {
+          register_code16(KC_DOT);
+
+          return false;
+        }
+      } else {
+        if (shift_count > 0 && (ctrl_count == 0 && alt_count == 0 && cmd_count == 0)) {
+          unregister_code16(FR_EXLM);
+        } else if ((ctrl_count > 0 && alt_count > 0) || (ctrl_count > 0 && alt_count > 0 && cmd_count > 0)) {
+          unregister_code16(KC_DOT);
         }
       }
-      eeconfig_update_user(led_config.raw);
-      return false;
       break;
-    case LED_3:
-      led_config.red_mode=LEDMODE_MODS;
-      eeconfig_update_user(led_config.raw);
-      return false;
-      break;
-    case LED_4:
-      led_config.green_mode=LEDMODE_MODS;
-      eeconfig_update_user(led_config.raw);
-      return false;
-      break;
-    case LED_5:
-      led_config.red_mode=LEDMODE_BLINKIN;
-      eeconfig_update_user(led_config.raw);
-      return false;
-      break;
-    case LED_6:
-      led_config.green_mode=LEDMODE_BLINKIN;
-      eeconfig_update_user(led_config.raw);
-      return false;
-      break;
-    case LED_7:
-      led_config.red_mode=LEDMODE_KEY;
-      eeconfig_update_user(led_config.raw);
-      return false;
-      break;
-    case LED_8:
-      led_config.green_mode=LEDMODE_KEY;
-      eeconfig_update_user(led_config.raw);
-      return false;
-      break;
-    case LED_9:
-      led_config.red_mode=LEDMODE_ENTER;
-      eeconfig_update_user(led_config.raw);
-      return false;
-      break;
-    case LED_0:
-      led_config.green_mode=LEDMODE_ENTER;
-      eeconfig_update_user(led_config.raw);
-      return false;
+
+    // /?
+    case FR_SLSH:
+      if (record->event.pressed) {
+        if (shift_count > 0) {
+          unregister_code(KC_LSFT);
+          register_code16(FR_QUES);
+          register_code(KC_LSFT);
+
+          return false;
+        }
+      } else {
+        if (shift_count > 0) {
+          unregister_code16(FR_QUES);
+        }
+      }
       break;
 
     // French special characters
-    case X_CIRC: // ^ (not dead)
+    case __CIRC: // ^ (not dead)
       if (record->event.pressed) {
         SEND_STRING(SS_TAP(X_LBRC)  SS_TAP(X_SPC));
       }
@@ -611,7 +584,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
-          SEND_STRING(SS_DOWN(X_RALT) SS_DOWN(X_RSFT) SS_TAP(X_1) SS_UP(X_RSFT) SS_UP(X_RALT) "E");
+          SEND_STRING(SS_DOWN(X_RALT) SS_DOWN(X_RSFT) SS_TAP(X_1) SS_UP(X_RSFT) SS_UP(X_RALT));
+          SEND_STRING(SS_DOWN(X_RSFT) SS_TAP(X_E) SS_UP(X_RSFT));
           register_code(KC_LSFT);
           return false;
         }
@@ -690,7 +664,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
 
     // »”
-    case F_RQUO:
+    case FR_RDAQ:
       if (record->event.pressed) {
         if (shift_count > 0) {
           SEND_STRING(SS_DOWN(X_RALT) "'" SS_UP(X_RALT));
@@ -718,6 +692,77 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       break;
+
+    case LED_1:
+      if (record->event.pressed) {
+        if (led_config.red_mode==LEDMODE_ON) {
+          led_config.red_mode=LEDMODE_OFF;
+          writePinLow(LED_RED);
+          }
+          else {
+          led_config.red_mode=LEDMODE_ON;
+          writePinHigh(LED_RED);
+        }
+      }
+      eeconfig_update_user(led_config.raw);
+      return false;
+      break;
+
+    case LED_2:
+      if (record->event.pressed) {
+        if (led_config.green_mode==LEDMODE_ON) {
+          led_config.green_mode=LEDMODE_OFF;
+          writePinLow(LED_GREEN);
+          }
+          else {
+          led_config.green_mode=LEDMODE_ON;
+          writePinHigh(LED_GREEN);
+        }
+      }
+      eeconfig_update_user(led_config.raw);
+      return false;
+      break;
+    case LED_3:
+      led_config.red_mode=LEDMODE_MODS;
+      eeconfig_update_user(led_config.raw);
+      return false;
+      break;
+    case LED_4:
+      led_config.green_mode=LEDMODE_MODS;
+      eeconfig_update_user(led_config.raw);
+      return false;
+      break;
+    case LED_5:
+      led_config.red_mode=LEDMODE_BLINKIN;
+      eeconfig_update_user(led_config.raw);
+      return false;
+      break;
+    case LED_6:
+      led_config.green_mode=LEDMODE_BLINKIN;
+      eeconfig_update_user(led_config.raw);
+      return false;
+      break;
+    case LED_7:
+      led_config.red_mode=LEDMODE_KEY;
+      eeconfig_update_user(led_config.raw);
+      return false;
+      break;
+    case LED_8:
+      led_config.green_mode=LEDMODE_KEY;
+      eeconfig_update_user(led_config.raw);
+      return false;
+      break;
+    case LED_9:
+      led_config.red_mode=LEDMODE_ENTER;
+      eeconfig_update_user(led_config.raw);
+      return false;
+      break;
+    case LED_0:
+      led_config.green_mode=LEDMODE_ENTER;
+      eeconfig_update_user(led_config.raw);
+      return false;
+      break;
+
   }
   return true;
 }
@@ -744,3 +789,4 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return TAPPING_TERM;
     }
 }
+// vim: expandtab tabstop=2 softtabstop=2 shiftwidth=2
