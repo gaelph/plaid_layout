@@ -22,3 +22,5 @@
 #define TAPPING_TERM_PER_KEY
 // #define PERMISSIVE_HOLD
 #define COMBO_COUNT 4
+#define RAW_USAGE_PAGE 0xFF60
+#define RAW_USAGE 0x61
