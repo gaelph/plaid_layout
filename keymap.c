@@ -200,6 +200,7 @@ void eeconfig_init_user(void) {  // EEPROM is getting reset!
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
+  layer_state_set_hid(state);
   return update_tri_layer_state(state, _CODE, _NUMBERS, _ADJUST);
 }
 
@@ -309,54 +310,52 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return true;
       break;
 
-    // case KC_LALT:
-    // case KC_RALT:
-    //   if (record->event.pressed) {
-    //     if (alt_count == 0) {
-    //       register_code(keycode);
-    //     }
-    //     alt_count++;
-    //   } else {
-    //     alt_count--;
-    //     if (alt_count == 0) {
-    //       unregister_code(keycode);
-    //     }
-    //   }
-    //   return false;
-    //   break;
+    case KC_LALT:
+    case KC_RALT:
+      if (record->event.pressed) {
+        if (alt_count == 0) {
+          register_code(keycode);
+        }
+        alt_count++;
+      } else {
+        alt_count--;
+        if (alt_count == 0) {
+          unregister_code(keycode);
+        }
+      }
+      return false;
+      break;
 			
-    // case KC_LCTL:
-    // case KC_RCTL:
-    //   if (record->event.pressed) {
-    //     if (ctrl_count == 0) {
-    //       register_code(keycode);
-    //     }
-    //     ctrl_count++;
-    //   } else {
-    //     ctrl_count--;
-    //     if (ctrl_count == 0) {
-    //       unregister_code(keycode);
-    //     }
-    //   }
-    //   return false;
-    //   break;
+    case KC_LCTL:
+    case KC_RCTL:
+      if (record->event.pressed) {
+        if (ctrl_count == 0) {
+          register_code(keycode);
+        }
+        ctrl_count++;
+      } else {
+        ctrl_count--;
+        if (ctrl_count == 0) {
+          unregister_code(keycode);
+        }
+      }
+      return false;
+      break;
 
     case KC_LGUI:
     case KC_RGUI:
-    //   if (record->event.pressed) {
-    //     if (cmd_count == 0) {
-    //       register_code(keycode);
-    //     }
-    //     cmd_count++;
-    //   } else {
-    //     cmd_count--;
-    //     if (cmd_count == 0) {
-    //       unregister_code(keycode);
-    //     }
-    //   }
-    //   return false;
-    //   break;
-    return true;
+      if (record->event.pressed) {
+        if (cmd_count == 0) {
+          register_code(keycode);
+        }
+        cmd_count++;
+      } else {
+        cmd_count--;
+        if (cmd_count == 0) {
+          unregister_code(keycode);
+        }
+      }
+      return false;
       break;
 
     case LCTL_A:
@@ -379,16 +378,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return true;
       break; 
 
-    // case LGUI_R:
-    // case LGUI_D:
-    // case RGUI_E:
-    //   if (record->event.pressed) {
-    //     cmd_count++;
-    //   } else {
-    //     cmd_count--;
-    //   }
-    //   return true;
-    //   break;
+    case LGUI_R:
+    case LGUI_D:
+    case RGUI_E:
+      if (record->event.pressed) {
+        cmd_count++;
+      } else {
+        cmd_count--;
+      }
+      return true;
+      break;
 
 
     // The code layer
@@ -476,6 +475,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
+          unregister_code(KC_RSFT);
           register_code16(FR_CCCE);
           register_code(KC_LSFT);
           return false;
@@ -533,6 +533,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
+          unregister_code(KC_RSFT);
         }
         SEND_STRING(SS_TAP(X_BSLS));
         if (shift_count > 0) {
