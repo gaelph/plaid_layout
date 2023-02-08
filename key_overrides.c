@@ -19,7 +19,7 @@ const key_override_t ca_comm_override = ko_make_basic(MOD_MASK_CA, FR_COMM, KC_C
 // };
 
 
-const key_override_t ca_dot_override = ko_make_basic(MOD_MASK_CA, FR_DOT, KC_DOT);
+// const key_override_t ca_dot_override = ko_make_basic(MOD_MASK_CA, FR_DOT, KC_DOT);
 const key_override_t slash_ques_override = ko_make_with_layers_negmods_and_options(MOD_MASK_SHIFT, FR_SLSH, FR_QUES, ~0, MOD_MASK_CAG, ko_option_no_reregister_trigger);
 
 const key_override_t **key_overrides = (const key_override_t *[]) {
@@ -27,7 +27,7 @@ const key_override_t **key_overrides = (const key_override_t *[]) {
   &comm_astr_override,
   &ca_comm_override,
   // &dot_exlm_override,
-  &ca_dot_override,
+  // &ca_dot_override,
   &slash_ques_override,
   NULL
 };

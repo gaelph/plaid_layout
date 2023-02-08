@@ -549,6 +549,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         if (shift_count > 0) {
           unregister_code(KC_LSFT);
+          unregister_code(KC_RSFT);
           register_code16(FR_CUGR);
           register_code(KC_LSFT);
           return false;
