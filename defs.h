@@ -1,3 +1,4 @@
+#pragma once
 
 enum plaid_layers {
   _ANNIE,
