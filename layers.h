@@ -1,9 +1,12 @@
 #pragma once
 
-#include QMK_KEYBOARD_H
-#include <keymap_french_osx.h>
-#include "./defs.h"
-#include "./keycodes.h"
+#ifndef GP_PLAID_LAYERS
+#    define GP_PLAID_LAYERS
+
+#    include QMK_KEYBOARD_H
+#    include <keymap_french_osx.h>
+#    include "./defs.h"
+#    include "./keycodes.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Annie Layeer
@@ -81,10 +84,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-------------------------------------------------------------------------------------------'
  */
 [_NUMBERS] = LAYOUT_plaid_grid(
-  _______, FR_1,    FR_2,    FR_3,    FR_4,      FR_5,    FR_6,    FR_7,    FR_8,    FR_9,    FR_0,    _______,
-  _______, XXXXXXX, KC_HOME, KC_PGUP, KC_PGDOWN, KC_END,  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, FR_ASTR, _______,
-  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, FR_PLUS, FR_MINS, FR_COMM, FR_DOT,  FR_SLSH, _______,
-  _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______, _______, _______
+    _______, FR_1,    FR_2,    FR_3,    FR_4,      FR_5,    FR_6,    FR_7,    FR_8,    FR_9,    FR_0,    _______,
+    _______, XXXXXXX, KC_HOME, KC_PGUP, KC_PGDOWN, KC_END,  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, FR_ASTR, _______,
+    _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, FR_PLUS, FR_MINS, FR_COMM, FR_DOT,  FR_SLSH, _______,
+    _______, _______, _______, _______, _______,   _______, _______, _______, _______, _______, _______, _______
 ),
 
 
@@ -100,10 +103,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] = LAYOUT_plaid_grid(
-  RESET,   LED_1,   LED_2,   MAGIC_TOGGLE_GUI, MAGIC_UNSWAP_GRAVE_ESC, LED_5,   LED_6,   LED_7,   LED_8,   LED_9,   LED_0,   KC_DEL,
-  ANNIE,   KC_F1,   KC_F2,   KC_F3,            KC_F4,                  KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
-  QWERTY,  DT_DOWN, KC_BRID, KC_BRIU,          DT_UP,                  DT_PRNT, KC_MUTE, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY, _______,
-  _______, _______, _______, _______,          _______,                _______, _______, _______, _______, _______, _______, _______
+    RESET,   LED_1,   LED_2,   MAGIC_TOGGLE_GUI, MAGIC_UNSWAP_GRAVE_ESC, LED_5,   LED_6,   LED_7,   LED_8,   LED_9,   LED_0,   KC_DEL,
+    ANNIE,   KC_F1,   KC_F2,   KC_F3,            KC_F4,                  KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  _______,
+    QWERTY,  DT_DOWN, KC_BRID, KC_BRIU,          DT_UP,                  DT_PRNT, KC_MUTE, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY, _______,
+    _______, _______, _______, _______,          _______,                _______, _______, _______, _______, _______, _______, _______
 )
     // clang-format on
 };
+#endif

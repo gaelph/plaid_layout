@@ -63,6 +63,7 @@ typedef struct list_layer_data {
 #define HID_PACKET_SIZE 32
 
 typedef struct {
+    uint8_t  report_id;
     uint8_t  command_code;
     uint16_t call_id;
     uint8_t  packet_number;
@@ -91,7 +92,12 @@ void send_hid_data(uint8_t cmd, uint16_t call_id, uint8_t *data, uint16_t length
     uint8_t      packet_number = 0;
     uint8_t      total_packets = (length + usable_payload_size - 1) / usable_payload_size;
 
+#ifdef CONSOLE_ENABLE
+    uprintf("SENDING cmd: 0x%X, call_id: 0x%X, length: %d\n", cmd, call_id, length);
+#endif
+
     while (bytes_sent < length) {
+        header.report_id     = 0;
         header.command_code  = cmd;
         header.call_id       = call_id;
         header.packet_number = packet_number;
@@ -105,6 +111,10 @@ void send_hid_data(uint8_t cmd, uint16_t call_id, uint8_t *data, uint16_t length
         bytes_sent += usable_payload_size;
         packet_number++;
     }
+
+#ifdef CONSOLE_ENABLE
+    uprintf("%u bytes were sent\n", bytes_sent);
+#endif
 }
 
 /**
@@ -113,9 +123,26 @@ void send_hid_data(uint8_t cmd, uint16_t call_id, uint8_t *data, uint16_t length
  */
 void send_layer_data_hid(uint16_t call_id) {
     uint8_t  number_of_layers    = sizeof(keymaps) / (MATRIX_ROWS * MATRIX_COLS * sizeof(uint16_t));
-    uint16_t total_layers_length = number_of_layers * MATRIX_ROWS * MATRIX_COLS;
+    uint16_t total_layers_length = number_of_layers * MATRIX_ROWS * MATRIX_COLS * sizeof(uint16_t);
 
-    send_hid_data(HID_CMD_GET_LAYERS, call_id, (uint8_t *)keymaps, total_layers_length);
+    uint16_t *data = malloc(total_layers_length);
+#ifdef CONSOLE_ENABLE
+    uprintf("SENDING LAYER_DATA %2u worthof bytes\n", total_layers_length);
+#endif
+    uint16_t idx = 0;
+    for (uint8_t i = 0; i < number_of_layers; i++) {
+        for (uint8_t j = 0; j < MATRIX_ROWS; j++) {
+            for (uint8_t k = 0; k < MATRIX_COLS; k++) {
+                data[idx++] = pgm_read_word(&keymaps[i][j][k]);
+#ifdef CONSOLE_ENABLE
+                uprintf("KEYMAP: %2u 0x%X\n", idx - 1, data[idx - 1]);
+#endif
+            }
+        }
+    }
+
+    send_hid_data(HID_CMD_GET_LAYERS, call_id, (uint8_t *)data, total_layers_length);
+    free(data);
 }
 
 typedef struct {
@@ -136,6 +163,10 @@ void send_layer_metadata_hid(uint16_t call_id) {
     metadata.rows                 = MATRIX_ROWS;
     metadata.cols                 = MATRIX_COLS;
 
+#ifdef CONSOLE_ENABLE
+    uprintf("SENDING CMD_LAYER_METADATA %u %u %u\n", metadata.n_layers, metadata.rows, metadata.cols);
+#endif
+
     send_hid_data(HID_CMD_GET_LAYERS_METADATA, call_id, (uint8_t *)&metadata, sizeof(metadata));
 }
 
@@ -147,21 +178,34 @@ typedef struct {
 } hid_cmd_call_t;
 
 void raw_hid_receive(uint8_t *data, uint8_t length) {
+#ifdef CONSOLE_ENABLE
+    uprint("--- HID RECEIVE ---");
+#endif
     if (length < 2) {
+#ifdef CONSOLE_ENABLE
+        uprintf("RECEIVED invalid data of length %u\n", length);
+#endif
         return;
     }
     hid_cmd_call_t *cmd_call = (hid_cmd_call_t *)data;
-    uint8_t        *d        = {0};
 
     switch (cmd_call->cmd) {
         case HID_CMD_GET_LAYERS:
+#ifdef CONSOLE_ENABLE
+            uprint("RECEIVED HID_CMD_GET_LAYERS");
+#endif
             send_layer_data_hid(cmd_call->call_id);
             break;
         case HID_CMD_GET_LAYERS_METADATA:
+#ifdef CONSOLE_ENABLE
+            uprint("RECEIVED HID_CMD_GET_LAYERS_METADATA");
+#endif
             send_layer_metadata_hid(cmd_call->call_id);
             break;
         default:
-            send_hid_data(HID_CMD_UNKNOWN, cmd_call->call_id, d, 0);
+#ifdef CONSOLE_ENABLE
+            uprintf("RECEIVED unknown command %u\n", cmd_call->cmd);
+#endif
             break;
     }
 }
@@ -177,13 +221,16 @@ typedef struct {
 } hid_event_t;
 
 void send_event_to_hid(uint16_t keycode, keyevent_t event) {
-    hid_event_t hidevent = {0};
-    hidevent.keycode     = keycode;
-    hidevent.col         = event.key.col;
-    hidevent.row         = event.key.row;
-    hidevent.pressed     = event.pressed ? 1 : 0;
-    hidevent.mods        = get_mods();
-    hidevent.layer       = layer;
+    hid_event_t hidevent;
+    hidevent.keycode = keycode;
+    hidevent.col     = event.key.col;
+    hidevent.row     = event.key.row;
+    hidevent.pressed = event.pressed ? 1 : 0;
+    hidevent.mods    = get_mods();
+    hidevent.layer   = layer;
+#ifdef CONSOLE_ENABLE
+    uprintf("SENDING HID_EVENT 0x%X %2u %2u %u %X %u\n", hidevent.keycode, hidevent.col, hidevent.row, hidevent.pressed, hidevent.mods, hidevent.layer);
+#endif
 
-    send_hid_data(HID_EVENT, next_call_id(), (uint8_t *)&event, sizeof(event));
+    send_hid_data(HID_EVENT, next_call_id(), (uint8_t *)&hidevent, sizeof(event));
 }

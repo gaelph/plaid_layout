@@ -23,7 +23,6 @@
 #include "./defs.h"
 #include "./keycodes.h"
 #include "./combos.h"
-#include "./layers.h"
 
 // array of keys considered modifiers for led purposes
 const uint16_t modifiers[] = {
