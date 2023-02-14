@@ -356,6 +356,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (shift_count > 0) {
                     unregister_code(KC_LSFT);
+                    unregister_code(KC_RSFT);
                     register_code16(FR_CEGR);
                     register_code(KC_LSFT);
                     return false;
@@ -371,6 +372,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (shift_count > 0) {
                     unregister_code(KC_LSFT);
+                    unregister_code(KC_RSFT);
                     SEND_STRING(SS_DOWN(X_RALT) SS_DOWN(X_RSFT) SS_TAP(X_1) SS_UP(X_RSFT) SS_UP(X_RALT));
                     SEND_STRING(SS_DOWN(X_RSFT) SS_TAP(X_E) SS_UP(X_RSFT));
                     register_code(KC_LSFT);
@@ -384,6 +386,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (shift_count > 0) {
                     unregister_code(KC_LSFT);
+                    unregister_code(KC_RSFT);
                     SEND_STRING(SS_RALT(SS_RSFT("e")));
                     register_code(KC_LSFT);
                     return false;
@@ -429,6 +432,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (shift_count > 0) {
                     unregister_code(KC_LSFT);
+                    unregister_code(KC_RSFT);
                 }
                 SEND_STRING(SS_DOWN(X_LSFT) SS_RALT("\'") SS_UP(X_LSFT));
                 if (shift_count > 0) {
@@ -443,6 +447,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (shift_count > 0) {
                     unregister_code16(KC_LSFT);
+                    unregister_code16(KC_RSFT);
                     SEND_STRING(SS_DOWN(X_RALT) "\"" SS_UP(X_RALT));
                     register_code16(KC_LSFT);
                     return false;
@@ -470,6 +475,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (shift_count > 0) {
                     unregister_code(KC_LSFT);
+                    unregister_code(KC_RSFT);
                     register_code16(FR_MDDT);
                     register_code(KC_LSFT);
                     return false;
@@ -575,4 +581,3 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return TAPPING_TERM;
     }
 }
-// vim: expandtab tabstop=2 softtabstop=2 shiftwidth=2
