@@ -19,9 +19,7 @@
 #include <sendstring_french_osx.h>
 #include <print.h>
 
-#ifdef KEYSTATS_ENABLE
-#    include "./hid.h"
-#endif
+#include "./hid.h"
 
 #include "./defs.h"
 #include "./keycodes.h"
@@ -249,9 +247,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef CONSOLE_ENABLE
     uprintf("KC: kc 0x%X, c: %2u, r: %2u, pressed: %u, mods: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, mods);
 #endif
-#ifdef KEYSTATS_ENABLE
     send_event_to_hid(keycode, record->event);
-#endif
     /* If the either led mode is keypressed based, call the led updater
        then let it fall through the keypress handlers. Just to keep
        the logic out of this procedure */
@@ -317,10 +313,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case FR_COMM:
             if (record->event.pressed) {
                 if (shift && (!ctrl && !alt && !gui)) {
-                    uint8_t current_mods = get_mods();
                     unregister_mods(MOD_MASK_SHIFT);
                     SEND_STRING(SS_DOWN(X_LSFT) SS_TAP(X_RBRC) SS_UP(X_LSFT));
-                    register_mods(current_mods);
+                    register_mods(mods);
 
                     return false;
                 } else if ((ctrl && alt) || (ctrl && alt && gui)) {
@@ -337,11 +332,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case FR_DOT:
             if (record->event.pressed) {
                 if (shift && (!ctrl && !alt && !gui)) {
-                    uint8_t current_mods = get_mods();
                     unregister_mods(MOD_MASK_SHIFT);
                     SEND_STRING(SS_TAP(X_8));
                     // put back the mods as they were
-                    register_mods(current_mods);
+                    register_mods(mods);
 
                     return false;
                 } else if ((ctrl && alt) || (ctrl && alt && gui)) {
@@ -355,10 +349,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case FR_SLSH:
             if (record->event.pressed) {
                 if (shift && (!ctrl && !alt && !gui)) {
-                    uint8_t current_mods = get_mods();
                     unregister_mods(MOD_MASK_SHIFT);
                     SEND_STRING(SS_DOWN(X_LSFT) SS_TAP(X_M) SS_UP(X_LSFT));
-                    register_mods(current_mods);
+                    register_mods(mods);
                     return false;
                 } else if ((ctrl && alt) || (ctrl && alt && gui)) {
                     SEND_STRING(SS_TAP(X_SLSH));
@@ -390,43 +383,52 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
             break;
 
+        case FR_NDSH:
+            if (record->event.pressed) {
+                if (shift) {
+                    unregister_mods(MOD_MASK_SHIFT);
+                    register_code16(FR_MDSH);
+                    register_mods(mods);
+                    return false;
+                }
+            } else if (shift) {
+                unregister_code16(FR_MDSH);
+            }
+            break;
+
         case FR_LCCE:  // çÇ
             if (record->event.pressed) {
                 if (shift) {
-                    unregister_code(KC_LSFT);
-                    unregister_code(KC_RSFT);
+                    unregister_mods(MOD_MASK_SHIFT);
                     register_code16(FR_CCCE);
-                    register_code(KC_LSFT);
+                    register_mods(mods);
                     return false;
                 }
-                return true;
+            } else if (shift) {
+                unregister_code16(FR_CCCE);
             }
             break;
 
         case FR_LEGR:  // èÈ
             if (record->event.pressed) {
                 if (shift) {
-                    unregister_code(KC_LSFT);
-                    unregister_code(KC_RSFT);
+                    unregister_mods(MOD_MASK_SHIFT);
                     register_code16(FR_CEGR);
-                    register_code(KC_LSFT);
+                    register_mods(mods);
                     return false;
                 }
-            } else {
-                if (shift) {
-                    unregister_code16(FR_CEGR);
-                }
+            } else if (shift) {
+                unregister_code16(FR_CEGR);
             }
+
             break;
 
         case FR_LEAC:  // éÉ
             if (record->event.pressed) {
                 if (shift) {
-                    unregister_code(KC_LSFT);
-                    unregister_code(KC_RSFT);
-                    SEND_STRING(SS_DOWN(X_RALT) SS_DOWN(X_RSFT) SS_TAP(X_1) SS_UP(X_RSFT) SS_UP(X_RALT));
-                    SEND_STRING(SS_DOWN(X_RSFT) SS_TAP(X_E) SS_UP(X_RSFT));
-                    register_code(KC_LSFT);
+                    // the acute accent requires alt+shift, but shift is already pressed
+                    // so that shift+alt+&, then shift+e
+                    SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_1) SS_UP(X_RALT) SS_TAP(X_E));
                     return false;
                 }
                 return true;
@@ -436,10 +438,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case FR_ECIR:  // êÊ
             if (record->event.pressed) {
                 if (shift) {
-                    unregister_code(KC_LSFT);
-                    unregister_code(KC_RSFT);
-                    SEND_STRING(SS_RALT(SS_RSFT("e")));
-                    register_code(KC_LSFT);
+                    // Ê requires shift+alt+e, put shift is already pressed
+                    SEND_STRING(SS_RALT("e"));
                     return false;
                 }
 
@@ -449,18 +449,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case FR_LAGR:  // àÀ
             if (record->event.pressed) {
-                if (shift) {
+                if (!shift) {
                     return true;
                 }
 
-                if (shift) {
-                    unregister_code(KC_LSFT);
-                    unregister_code(KC_RSFT);
-                }
+                // capital À requires ` (dead), and that is X_BSLS with no
+                // shift on an AZERTY mac layout
+                unregister_mods(MOD_MASK_SHIFT);
                 SEND_STRING(SS_TAP(X_BSLS));
-                if (shift) {
-                    register_code(KC_LSFT);
-                }
+                register_mods(mods);
+
                 SEND_STRING("a");
 
                 return false;
@@ -470,40 +468,42 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case FR_LUGR:  // ùÙ
             if (record->event.pressed) {
                 if (shift) {
-                    unregister_code(KC_LSFT);
-                    unregister_code(KC_RSFT);
+                    unregister_mods(MOD_MASK_SHIFT);
                     register_code16(FR_CUGR);
-                    register_code(KC_LSFT);
+                    register_mods(mods);
                     return false;
                 }
             }
             break;
 
+            // ’ typographic apostrophe, missing from the QMK headers
         case FR_LRQU:
             if (record->event.pressed) {
-                if (shift) {
-                    unregister_code(KC_LSFT);
-                    unregister_code(KC_RSFT);
-                }
-                SEND_STRING(SS_DOWN(X_LSFT) SS_RALT("\'") SS_UP(X_LSFT));
-                if (shift) {
+                if (!shift) {
                     register_code(KC_LSFT);
                 }
+                SEND_STRING(SS_RALT("\'"));
+                if (!shift) {
+                    unregister_code(KC_LSFT);
+                }
+
                 return false;
             }
             break;
 
-        // «“
+        // «“ make the shift of « be “
         case FR_LDAQ:
             if (record->event.pressed) {
                 if (shift) {
-                    unregister_code16(KC_LSFT);
-                    unregister_code16(KC_RSFT);
-                    SEND_STRING(SS_DOWN(X_RALT) "\"" SS_UP(X_RALT));
-                    register_code16(KC_LSFT);
+                    unregister_mods(MOD_MASK_SHIFT);
+                    SEND_STRING(SS_RALT("\""));
                     return false;
-                } else {
-                    return true;
+                }
+
+            } else {
+                if (shift) {
+                    register_mods(mods);
+                    return false;
                 }
             }
             break;
@@ -512,30 +512,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case FR_RDAQ:
             if (record->event.pressed) {
                 if (shift) {
-                    SEND_STRING(SS_DOWN(X_RALT) "'" SS_UP(X_RALT));
+                    SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_3) SS_UP(X_RALT));
                     return false;
-                } else {
-                    return true;
                 }
+
+                return true;
             }
             break;
 
-            // …·
-
+        // …·
         case FR_ELLP:
             if (record->event.pressed) {
                 if (shift) {
-                    unregister_code(KC_LSFT);
-                    unregister_code(KC_RSFT);
-                    register_code16(FR_MDDT);
-                    register_code(KC_LSFT);
+                    SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_F) SS_UP(X_RALT));
                     return false;
                 }
                 return true;
-            } else {
-                if (shift) {
-                    unregister_code16(FR_MDDT);
-                }
             }
             break;
 
