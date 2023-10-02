@@ -83,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_CODE] = LAYOUT_plaid_grid(
-  __TILD,  FR_AMPR, FR_LABK, FR_LBRC, FR_RBRC, FR_SLSH, XXXXXXX, FR_DQUO, FR_QUOT, XXXXXXX, FR_UNDS, KC_DEL,
+  __TILD,  FR_AMPR, FR_LABK, FR_LBRC, FR_RBRC, FR_SLSH, XXXXXXX, FR_QUOT, FR_DQUO, XXXXXXX, FR_UNDS, KC_DEL,
   KC_ESC,  __GRV,   FR_EQL,  FR_LPRN, FR_RPRN, FR_EXLM, __CIRC,  FR_COLN, FR_SCLN, XXXXXXX, FR_AT,   FR_DLR,
   _______, FR_PIPE, FR_RABK, FR_LCBR, FR_RCBR, FR_PERC, FR_PLUS, FR_MINS, FR_HASH, FR_ELLP, FR_BSLS, _______,
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
